@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: korallo159 <orszulak.k1@gmail.com>
+Date: Tue, 19 Sep 2023 15:48:55 +0200
+Subject: [PATCH] Prevent crash on inject scaled max health
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index 7c43de6ad6bd7259c6bcb2a55e312e8abfcf546b..76366d01670ccf1f9e4ca2bb632a522334a35964 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -2364,11 +2364,16 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         if (!this.scaledHealth && !force) {
+             return;
+         }
+-        for (AttributeInstance genericInstance : collection) {
+-            if (genericInstance.getAttribute() == Attributes.MAX_HEALTH) {
+-                collection.remove(genericInstance);
+-                break;
++        try {
++            for (AttributeInstance genericInstance : collection) {
++                if (genericInstance.getAttribute() == Attributes.MAX_HEALTH) {
++                    collection.remove(genericInstance);
++                    break;
++                }
+             }
++        } catch (Exception e){
++            System.out.println("Exception occured in inject scaled max health, preventing crash");
++            e.printStackTrace();
+         }
+         AttributeInstance dummy = new AttributeInstance(Attributes.MAX_HEALTH, (attribute) -> { });
+         // Spigot start

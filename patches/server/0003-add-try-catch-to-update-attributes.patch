@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: korallo159 <orszulak.k1@gmail.com>
+Date: Sat, 28 Jan 2023 21:10:30 +0100
+Subject: [PATCH] add try catch to update attributes
+
+
+diff --git a/src/main/java/net/minecraft/network/protocol/game/ClientboundUpdateAttributesPacket.java b/src/main/java/net/minecraft/network/protocol/game/ClientboundUpdateAttributesPacket.java
+index e8439aedef4ad9639959d97fb69c0ee5a744198c..c2ae15ebbba3bcb2c69de84e82b23ac99fbac358 100644
+--- a/src/main/java/net/minecraft/network/protocol/game/ClientboundUpdateAttributesPacket.java
++++ b/src/main/java/net/minecraft/network/protocol/game/ClientboundUpdateAttributesPacket.java
+@@ -18,9 +18,13 @@ public class ClientboundUpdateAttributesPacket implements Packet<ClientGamePacke
+     public ClientboundUpdateAttributesPacket(int entityId, Collection<AttributeInstance> attributes) {
+         this.entityId = entityId;
+         this.attributes = Lists.newArrayList();
+-
+-        for(AttributeInstance attributeInstance : attributes) {
+-            this.attributes.add(new ClientboundUpdateAttributesPacket.AttributeSnapshot(attributeInstance.getAttribute(), attributeInstance.getBaseValue(), attributeInstance.getModifiers()));
++        try {
++            for (AttributeInstance attributeInstance : attributes) {
++                this.attributes.add(new ClientboundUpdateAttributesPacket.AttributeSnapshot(attributeInstance.getAttribute(), attributeInstance.getBaseValue(), attributeInstance.getModifiers()));
++            }
++        } catch (Exception e) {
++            System.out.println("Error occured in updating attributes packet, preventing crash.");
++            e.printStackTrace();
+         }
+ 
+     }
