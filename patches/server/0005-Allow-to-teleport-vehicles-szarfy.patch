@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Karol Orszulak <orszulak.k1@gmail.com>
+Date: Wed, 12 Feb 2025 13:52:01 +0100
+Subject: [PATCH] Allow to teleport vehicles (szarfy)
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index 76366d01670ccf1f9e4ca2bb632a522334a35964..3bdaa2bf4259a6f095a735dea2706f5ffb9beef8 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -1275,9 +1275,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+            return false;
+         }
+ 
+-        if (entity.isVehicle() && !ignorePassengers) { // Paper - Teleport API
+-            return false;
+-        }
++        /*
++            Zostało wywalone przez szarfy, bo gracz mając szarfe na głowie jest vehicle.
++         */
++//        if (entity.isVehicle() && !ignorePassengers) { // Paper - Teleport API
++//            return false;
++//        }
+ 
+         // From = Players current Location
+         Location from = this.getLocation();
